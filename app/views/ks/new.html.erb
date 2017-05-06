@@ -1,0 +1,33 @@
+<form method="post" action="<%=category_ks_path %>">
+  <div class="form-group" style="margin-top: 40px">
+    <label for="title">标题</label>
+    <input class="form-control" id="title" name="title" type="text" placeholder="请输入内容标题">
+  </div>
+
+  <div class="form-group" style="margin-top: 40px">
+    <label for="title">设置标签（多个标签使用空格隔开）</label>
+    <input class="form-control" id="tag_name" name="tag_name" type="text" placeholder="请输入标签">
+  </div>
+  
+  <textarea id="editor" placeholder="请输入内容" name="content" class="form-control" cols="50" autofocus></textarea>
+  <div class="form-group" style="margin-top: 20px">
+    <input class="btn-primary btn" type="submit">
+
+  </div>
+</form>
+
+<script>
+    var editor = new Simditor({
+        textarea: $('#editor'),
+        //optional options
+        params: {
+            "authenticity_token": "<%=form_authenticity_token.to_s %>"
+        },
+        pasteImage: true,
+        fileKey: 'file',
+        upload: {
+            url: '/photos',
+            leaveConfirm: 'Uploading is in progress, are you sure to leave this page?'
+        }
+    });
+</script>

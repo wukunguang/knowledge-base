@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KnowledgeBase</title>
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag 'admin/admin' %>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">知识库后台管理</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" data-toggle="modal" data-target="#myModal2">修改密码</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid" style="margin-top: 50px">
+  <div class="row">
+    <div class="col-sm-3 col-md-2 " id="leftbar">
+      <ul class="list-group">
+        <li><a href="manage">知识管理</a></li>
+        <% if current_user %>
+            <li><a href="users">其他操作</a></li>
+      <% end %>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <%= yield %>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="margin-top: 200px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="title">分组更新</h4>
+      </div>
+      <div class="modal-body">
+        <label for="pre-password">请输入原来的密码</label>
+        <input class="form-control" id="pre-password" type="password" placeholder="请输入原密码">
+        <br>
+        <label for="new-password">请输入新的密码</label>
+        <input class="form-control" id="new-password" type="password" placeholder="新密码">
+        <br>
+        <label for="re-new-password">重复新密码</label>
+        <input class="form-control" id="re-new-password" type="password" placeholder="重复新密码">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" onclick="resetPassword()">提交更改</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal -->
+</div>
+<script>
+  function resetPassword() {
+      if ($('#new-password').val()==$('#re-new-password').val()){
+          $.ajax(
+              {
+                  url: '/user/'+<%= @_current_user.id %>,
+                  type: 'POST',
+                  data: {
+                      '<%= request_forgery_protection_token.to_s%>': '<%= form_authenticity_token%>',
+                      password: $('#pre-password').val(),
+                      new_password: $('#new-password').val(),
+                      username: <%= @_current_user.username %>
+                  },
+                  success: function (data, statusCode) {
+                      if (statusCode === 200){
+                          $('#myModal').modal('hide');
+                          alert('操作成功!')
+                      }
+                      else {
+                          alert('操作失败!')
+                      }
+                  },
+                  error: function () {
+                      alert('操作失败！')
+                  }
+              }
+          )
+      } else {
+          alert('输入两次输入密码不一致，请稍后再试！');
+      }
+
+  }
+</script>
+</body>
+</html>

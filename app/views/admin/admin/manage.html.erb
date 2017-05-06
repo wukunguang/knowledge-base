@@ -1,0 +1,201 @@
+<h4 style="margin-top: 25px; width: 200px">分组信息 </h4>
+
+<div class=" col-md-2 col-sm-3" id="manage-group">
+  <ul id="group-show">
+  </ul>
+
+</div>
+
+<div class=" col-md-7 col-sm-8 col-md-offset-1" id="manage-detail">
+  <ul id="detail-show">
+    <li>请选择左边一个分组</li>
+  </ul>
+
+</div>
+<div class="btn-group-sm manage-group-btn" role="group" >
+  <button type="button" data-toggle="modal" data-target="#myModal" onclick="setAction('new')" class="btn btn-primary">新建</button>
+  <button type="button" data-toggle="modal" data-target="#myModal" onclick="setAction('update', 'PUT')" class="btn btn-info">修改信息</button>
+  <button type="button" class="btn btn-danger" onclick="setGroup('delete', 'delete')">删除</button>
+</div>
+
+<div class="btn-group-sm detail-group-btn" role="group" >
+  <a href="new" id="new-ks" class="btn btn-primary disabled">新建</a>
+  <a type="button" id="edit" class="btn btn-info">修改信息</a>
+  <button type="button" id="del-ks" onclick="delks()" class="btn btn-danger disabled">删除</button>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="margin-top: 200px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="title">分组更新</h4>
+      </div>
+      <div class="modal-body">
+        <label for="name">名称</label>
+        <input class="form-control" id="name" type="text" placeholder="请输入分组名称">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" onclick="setGroup(action, method)">提交更改</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal -->
+</div>
+
+
+<script>
+  //设置默认action，请求方法
+
+  var action = 'new';
+  var method = 'POST';
+  var c_id = 0;
+  var ks_id = 0;
+  //获取分组列表
+  function initList() {
+      $.ajax({
+          url:'/categories',
+          type:'GET',
+          dataType: 'json',
+          success: function (data) {
+              $('#group-show').children().remove();
+              for (var i =0 ; i < data.length; i++){
+                  $('#group-show').append(
+                      '<li id='+data[i]['id']+'>'+data[i]['name']+'</li>'
+                  );
+              }
+              //给每个列表元素设置焦点。
+              $('#group-show li').click(function () {
+                  $('#group-show').children('.clicked').removeClass('clicked');
+                  $('#new-ks').attr('href', '/categories/'+$(this).attr('id')+'/ks/new');
+                  $('#new-ks').removeClass('disabled');
+                  $('#edit').addClass('disabled');
+                  $('#del-ks').addClass('disabled');
+                  $(this).addClass('clicked');
+                  //点击列表加载分组信息。
+                  initDetail();
+              });
+
+          }
+      });
+  }
+
+  function initDetail() {
+      //首先获取分组id
+      c_id = getIdByClick();
+      $.ajax({
+          url: '/categories/'+c_id+'/ks',
+          type: 'GET',
+          dataType: 'json',
+          success: function (data) {
+              $('#detail-show').children().remove();
+              for (var i =0 ; i < data.length; i++){
+                  $('#detail-show').append(
+                      '<li id=d-'+data[i]['id']+'>'+data[i]['title']+'</li>'
+                  );
+              }
+              //给每个列表元素设置焦点。
+              $('#detail-show li').click(function () {
+                  $('#detail-show').children('.clicked').removeClass('clicked');
+                  $(this).addClass('clicked');
+                  let _id = $(this).attr('id').split('-')[1];
+                  $('#edit').removeClass('disabled');
+                  $('#del-ks').removeClass('disabled');
+                  //设置ks_id，用于可能的删除操作。
+                  ks_id = _id
+                  $('#edit').attr('href', '/ks/'+_id+'/edit');
+              });
+          }
+      });
+  }
+
+
+  //设置请求方式
+  function setAction(str, md = 'POST') {
+      //如果是更新，那么就需要提前获取分组名字
+      if (str == 'update'){
+          c_id = getIdByClick();
+          if(c_id){
+              let name = $('#group-show').find('#'+c_id).html();
+              $('#name').val(name);
+          } else {
+              return false;
+          }
+      }
+      else {
+          $('#name').val('');
+      }
+      action = str;
+      method = md;
+  }
+
+  //删除选项
+  function delks() {
+          $.ajax({
+              url:'/ks/'+ks_id,
+              type:'DELETE',
+              dataType: 'json',
+              success: function () {
+                alert('操作成功！');
+                initDetail();
+              },
+              error: function () {
+                  alert('操作失败！')
+              }
+          });
+  }
+
+  //获取焦点信息
+  function getIdByClick() {
+      if ($('#group-show').children('.clicked').length != 0) {
+          const ss = $('#group-show').find('.clicked').attr('id');
+          return ss;
+      } else {
+          alert('清选择一个目标');
+          return false;
+      }
+  }
+
+  window.onload = initList();
+
+    //点击获取聚焦
+
+    function setGroup(action, method = 'POST') {
+        let url = null;
+        if(action=='new' ){
+            url = '/categories'
+        } else if(action=='update') {
+            url = '/categories' + '/'+ c_id;
+        } else if(action=='delete') {
+            c_id = getIdByClick();
+            var ensure = confirm('确定执行删除吗?');
+            if (c_id && ensure){
+                url = '/categories' + '/'+ c_id;
+            }
+            else {
+                return false;
+            }
+        }
+        $.ajax({
+            url: url,
+            type: method,
+            data:{
+                '<%= request_forgery_protection_token.to_s%>': '<%= form_authenticity_token%>',
+                'name': $('#name').val()
+            },
+            success: function (code, status) {
+                alert('操作成功!');
+                $('#name').val('');
+                $('#myModal').modal('hide');
+                initList();
+                $('#detail-show').children().remove();
+            },
+            error: function () {
+                alert('操作失败!');
+            }
+        });
+
+    }
+    //创建分组
+
+</script>

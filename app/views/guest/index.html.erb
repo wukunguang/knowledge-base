@@ -1,0 +1,65 @@
+<div class="container m-container" style="margin-top: 10%">
+
+    <h1 style="text-align: center">知识库</h1>
+    <div class="col-lg-12">
+
+        <!--
+        <input class="form-control" id="inputSearch" type="text">
+        <button type="submit" class="btn btn-success">搜索</button>
+        -->
+          <div class="col-lg-8 col-lg-offset-3">
+            <form class="form form-horizontal" action="<%= ks_search_index_path %>" method="get">
+              <div class="row m-serach-row">
+                <div class="col-lg-9">
+                  <div class="form-group" id="m-input-search-div">
+                    <input class="form-control" name="keyword" id="keyword" type="text">
+                  </div>
+
+                </div>
+                <div class="col-lg-2 m-search-row-btn">
+                  <button type="submit" id="mainSearchBtn" class="btn btn-success">搜索</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <br>
+
+    </div>
+
+  <br><br><br>
+    <div class="col-lg-6">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h3 class="panel-title">最新更新</h3>
+        </div>
+        <ul class="panel-body list-group">
+          <% @last_update.each do |k, v| %>
+            <li class="">
+              <a target="_blank" href="/ks/<%= v['id']%>">
+                <%= v['title'].length > 25 ? v['title'][0..20]+'...' : v['title']%> &nbsp;<span class="author text-left">作者: <%= v['author'] %></span>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h3 class="panel-title">热门访问</h3>
+        </div>
+        <ul class="panel-body list-group">
+          <% @getter_count.each do |k, v| %>
+              <li class="">
+                <a target="_blank" href="/ks/<%= v['id']%>">
+                  <%= v['title'].length > 25 ? v['title'][0..20]+'...' : v['title']%> &nbsp;<span class="author text-left">作者: <%= v['author'] %></span>
+                </a>
+              </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <br>
+
+</div>

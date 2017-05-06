@@ -1,0 +1,46 @@
+<div class="container" style="margin-top: 75px">
+  <div class="col-md-8" id="knowledge">
+    <div class="header">
+      <h1 class="blog-title"><%= @ks_res.title %></h1>
+      <p class="time"><%= @ks_res.updated_at.asctime %> by <%= @ks_res.author %></p>
+      <p id="tag-name">标签：<% @ks_res.tag_name %></p>
+    </div>
+    <hr>
+    <div id="knowledge-content">
+      <%= raw @ks_res.content %>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h3 class="panel-title">最新更新</h3>
+      </div>
+      <ul class="panel-body list-group">
+        <% @last_update.each do |k, v| %>
+            <li class="">
+              <a target="_blank" href="/ks/<%= v['id']%>">
+                <%= v['title'].length > 25 ? v['title'][0..20]+'...' : v['title']%> &nbsp;<span class="author text-left">作者: <%= v['author'] %></span>
+              </a>
+            </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h3 class="panel-title">最热门</h3>
+      </div>
+      <ul class="panel-body list-group">
+        <% @getter_count.each do |k, v| %>
+            <li class="">
+              <a target="_blank" href="/ks/<%= v['id']%>">
+                <%= v['title'].length > 25 ? v['title'][0..20]+'...' : v['title']%> &nbsp;<span class="author text-left">作者: <%= v['author'] %></span>
+              </a>
+            </li>
+        <% end %>
+      </ul>
+    </div>
+
+    </div>
+  </div>
+</div>

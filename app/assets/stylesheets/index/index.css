@@ -1,0 +1,57 @@
+* {
+    list-style: none;
+}
+body {
+    background-color: #f8f8f8;
+}
+.search-list:hover {
+    background-color: #f8f8f8;
+
+}
+.search-list .list-group-item{
+    border: none;
+    padding-top: 20px;
+    background-color: transparent;
+
+}
+#result {
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px #ccc;
+    padding: 20px;
+}
+
+.search-list  h4 {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    text-indent: 0.5em;
+}
+
+
+.search-list p {
+    padding-top: 10px;
+    text-indent: 1em;
+}
+
+
+
+#knowledge {
+    background-color: white;
+    box-shadow: 0 1px 3px #ccc;
+    padding-top: 30px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+#tag-name {
+    padding-top: 10px;
+}
+
+#knowledge-content {
+    margin-top: 20px;
+    min-height: 600px;
+}
+
+hr {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

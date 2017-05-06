@@ -1,0 +1,81 @@
+<div class="container" style="margin-top: 70px">
+    <div class="col-lg-12">
+        <!--
+        <input class="form-control" id="inputSearch" type="text">
+        <button type="submit" class="btn btn-success">搜索</button>
+        -->
+          <div class="col-lg-8">
+            <form class="form form-horizontal" action="<%= ks_search_index_path %>" method="get">
+                <div class="col-lg-9">
+                  <div class="form-group" id="m-input-search-div">
+                    <input class="form-control" name="keyword" id="keyword" type="text" value="<%= @keywords %>" placeholder="请搜索你想要的知识内容">
+                  </div>
+
+                </div>
+                <div class="col-lg-2 m-search-row-btn">
+                  <button type="submit" id="mainSearchBtn" class="btn btn-success">搜索</button>
+                </div>
+            </form>
+          </div>
+      <div class="col-lg-12" id="result" style="margin-top: 3%">
+        <h4 >以下是为您搜索到关于"<%= @keywords %>"的内容一共<%= @count %>条:</h4>
+        <hr>
+        <ul class="list-group">
+          <% @result.each do |k, v| %>
+              <li class="search-list">
+                <div class="list-group-item">
+                  <h4 class="list-group-item-heading">
+                    &nbsp;<a href="/ks/<%= k.attributes['id']%>"><%= k.attributes['title'] %></a>
+                  </h4>
+                  <p class="list-group-item-text">标签: &nbsp;
+                    <% arr =  k.attributes['tag_name'].split(' ') %>
+                    <% arr.each do |el|%>
+                      <a href="<%= ks_search_index_path %>?keyword=<%= el%>"><%= el%></a>&nbsp;
+                    <% end %>
+                  </p>
+                  <p class="list-group-info">最近更新：<%= k.attributes['updated_at'] %> | 作者：<%= k.attributes['author']%></p>
+                </div>
+              </li>
+              <hr>
+          <% end %>
+        </ul>
+        <br>
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+              <% if @current_page != 1%>
+                <li>
+                  <a href="<%= ks_search_index_path %>?keyword=<%= @keywords%>" aria-label="Prev">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+              <% end %>
+
+            <% if @current_page > 3%>
+              <% for i in @current_page -2..@current_page + 2 %>
+                <% if i > @all_page %>
+                        <% break %>
+                <% else %>
+                   <li><a href="<%= ks_search_index_path %>?keyword=<%= @keywords%>&page=<%= i%>"><%= i%></a></li>
+                <% end %>
+              <% end %>
+            <% else%>
+                <% for i in 1..5 %>
+                    <% if i > @all_page %>
+                        <% break %>
+                    <% else %>
+                        <li class="<%= 'active' if i == @current_page %>"><a href="<%= ks_search_index_path %>?keyword=<%= @keywords%>&page=<%= i%>"><%= i%></a></li>
+                    <% end %>
+                <% end %>
+            <% end %>
+            <% if @current_page != @all_page%>
+                <li>
+                  <a href="<%= ks_search_index_path %>?keyword=<%= @keywords%>&page=<%= @current_page + 1%>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+            <% end %>
+          </ul>
+        </nav>
+    </div>
+  </div>
+</div>

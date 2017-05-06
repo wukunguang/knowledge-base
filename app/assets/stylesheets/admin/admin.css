@@ -1,0 +1,109 @@
+ul li {
+    list-style: none;
+}
+
+#leftbar {
+    position: fixed;
+    left: 0px;
+    height: 100%;
+    background-color: #f5f5f5;
+    padding: 0;
+    font-size: 15px;
+    color: #428bca;
+    border-right: 1px solid #8fe0ce;
+}
+
+#leftbar > ul {
+    margin: 0;
+}
+
+#leftbar > ul > li {
+    line-height: 20px;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+}
+#leftbar ul > li > a {
+    display: block;
+    width: 100%;
+    line-height: 20px;
+    padding: 20px;
+    text-decoration: none;
+
+}
+#leftbar > ul > li > a:hover {
+    background-color: #428bca;
+    color: white;
+
+}
+.main{
+
+}
+
+#manage-group {
+    height: 500px;
+    overflow: auto;
+    border: 1px solid #428bca;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#manage-group > ul {
+    padding-left: 0px;
+}
+#manage-group > ul  li {
+    display: block;
+    font-size: 16px;
+    width: 100%;
+    line-height: 20px;
+    padding: 15px;
+    cursor: pointer;
+
+}
+
+.clicked {
+    background-color: #428bca;
+    color: white;
+}
+
+#manage-group > ul > li:hover {
+    background-color: #80a0ca;
+    color: white;
+}
+
+.manage-group-btn {
+    position: absolute;
+    top: 560px;
+    left: 10px;
+}
+
+#manage-detail {
+    border: 1px solid #428bca;
+    height: 500px;
+    overflow: auto;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+#manage-detail > ul {
+    padding-left: 0px;
+}
+
+#manage-detail > ul > li {
+    display: block;
+    font-size: 16px;
+    width: 100%;
+    line-height: 20px;
+    padding: 15px;
+    cursor: pointer;
+}
+
+#manage-detail > ul > li:hover {
+    background-color: #80a0ca;
+    color: white;
+}
+
+.detail-group-btn {
+    position: absolute;
+    left: 400px;
+    top: 560px;
+}
