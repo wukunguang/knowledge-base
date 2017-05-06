@@ -4,7 +4,7 @@ class CategoriesController < ApplicationController
   before_action :auth, only: [:create, :delete]
 
   def index
-    @categories = Category.all
+    @categories = Category.where(user_id: current_user.id)
     render json: @categories, status: 200
   end
 
@@ -23,7 +23,9 @@ class CategoriesController < ApplicationController
   end
 
   def create
-    Category.create(params_cate) ? render_msg(200) : render_msg(500)
+    ww = params_cate
+    ww[:user_id] = current_user.id
+    Category.create(ww) ? render_msg(200) : render_msg(500)
   end
 
   def destroy

@@ -13,7 +13,7 @@ set :application_name, 'knowledge-base'
 set :user, 'root'
 set :domain, '104.207.158.71'
 set :deploy_to, '/var/rails-project'
-set :repository, 'git://...'
+set :repository, 'https://github.com/wukunguang/knowledge-base.git'
 set :branch, 'master'
 
 # Optional settings:
